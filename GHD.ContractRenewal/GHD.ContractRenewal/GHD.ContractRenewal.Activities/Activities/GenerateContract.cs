@@ -192,6 +192,7 @@ namespace GHD.ContractRenewal.Activities
                     }
 
 
+
                     doc.Save();
                     doc.Close(ref missing, ref missing, ref missing);
                     doc = null;
