@@ -128,11 +128,9 @@ namespace GHD.ContractRenewal.Activities
                 Word.Application app = null;
                 Word.Documents docs = null;
                 Word.Document doc = null;
-                Word.Table tblCustomerDetails = null;
                 Word.Table tblOrderTerms = null;
                 Word.Table tblSOW = null;
                 Word.Table tblOptional = null;
-                Word.Range tblMethodologyResultsRng = null;
                 bool IsWordAppLaunched = false;
                 bool isBid = getDocType(dtInfo);
                 string strFileName = getFileName(dtInfo);
@@ -153,6 +151,8 @@ namespace GHD.ContractRenewal.Activities
                     doc = docs.Open(newFilePath, ReadOnly: false);
                     Log("Opened word document");
 
+                    tblSOW = doc.Tables[2];
+                    tblOptional = doc.Tables[3];
 
                     foreach (KeyValuePair<string, string> item in dicInfo)
                     {
@@ -191,7 +191,26 @@ namespace GHD.ContractRenewal.Activities
                         }
                     }
 
+                    
+                    /* Update SOW Table
+                     * cell(i+2) the +2 is for the buffer tbl row starts at 1, the 1st row is the header so it should starts at index 2
+                     */
+                    for (int i = 0; i< dtAnnual.Rows.Count; i++)
+                    {
+                        for(int j = 0; j < dtAnnual.Columns.Count; j++)
+                        {
+                            tblSOW.Cell(i + 2, j).Range.Text = dtAnnual.Rows[i][j].ToString();
+                        }
+                    }
 
+                    //Update Optional table
+                    for (int i = 0; i < dtOptional.Rows.Count; i++)
+                    {
+                        for (int j = 0; j < dtAnnual.Columns.Count; j++)
+                        {
+                            tblOptional.Cell(i + 2, j).Range.Text = dtOptional.Rows[i][j].ToString();
+                        }
+                    }
 
                     doc.Save();
                     doc.Close(ref missing, ref missing, ref missing);
@@ -214,8 +233,6 @@ namespace GHD.ContractRenewal.Activities
                 }
                 finally
                 {
-                    if (tblMethodologyResultsRng != null) { Marshal.ReleaseComObject(tblMethodologyResultsRng); }
-                    if (tblCustomerDetails != null) { Marshal.ReleaseComObject(tblCustomerDetails); }
                     if (tblOrderTerms != null) { Marshal.ReleaseComObject(tblOrderTerms); }
                     if (tblSOW != null) { Marshal.ReleaseComObject(tblSOW); }
                     if (tblOptional != null) { Marshal.ReleaseComObject(tblOptional); }
