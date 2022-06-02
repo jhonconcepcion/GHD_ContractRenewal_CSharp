@@ -274,6 +274,15 @@ namespace GHD.ContractRenewal.Activities
                     customInfo["Purpose"] = drow["Purpose"].ToString();
                     customInfo["Total Implementation"] = drow["Total Implmentation Fee"].ToString();
                     customInfo["Total Annual"] = drow["Total Annual Fee"].ToString();
+                    customInfo["Acceptance Criteria"] = drow["Acceptance Criteria"].ToString();
+                    customInfo["Delivery Schedule"] = drow["Delivery Schedule"].ToString();
+                    customInfo["Exclusions"] = drow["Exclusions and Assumptions"].ToString();
+                    customInfo["Payment Schedule"] = drow["Payment Schedule On-Time"].ToString();
+                    customInfo["Year Fee"] = drow["Payment Schedule Year's fees"].ToString();
+                    customInfo["Sign Name"] = drow["Customer Sign Print Name"].ToString();
+                    customInfo["Sign Title"] = drow["Customer Sign Print Title"].ToString();
+                    customInfo["Sign Date"] = drow["Customer Sign Date"].ToString();
+                    customInfo["GHD Sign Date"] = drow["GHD Digital Sign Date"].ToString();
                 }
 
                 return customInfo;
