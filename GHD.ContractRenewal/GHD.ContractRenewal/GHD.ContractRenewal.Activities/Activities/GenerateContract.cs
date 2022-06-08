@@ -65,17 +65,6 @@ namespace GHD.ContractRenewal.Activities
         [LocalizedDescription(nameof(Resources.GenerateContract_DataTableInfo_Description))]
         [LocalizedCategory(nameof(Resources.Input_Category))]
         public InArgument<DataTable> DataTableInfo { get; set; }
-
-        [LocalizedDisplayName(nameof(Resources.GenerateContract_DataTableAnnual_DisplayName))]
-        [LocalizedDescription(nameof(Resources.GenerateContract_DataTableAnnual_Description))]
-        [LocalizedCategory(nameof(Resources.Input_Category))]
-        public InArgument<DataTable> DataTableAnnual { get; set; }
-
-        [LocalizedDisplayName(nameof(Resources.GenerateContract_DataTableOptional_DisplayName))]
-        [LocalizedDescription(nameof(Resources.GenerateContract_DataTableOptional_Description))]
-        [LocalizedCategory(nameof(Resources.Input_Category))]
-        public InArgument<DataTable> DataTableOptional { get; set; }
-
         #endregion
 
 
@@ -104,8 +93,6 @@ namespace GHD.ContractRenewal.Activities
             var bidTemplatePath = BidTemplatePath.Get(context);
             var outputFolderPath = OutputFolderPath.Get(context);
             var dataTableInfo = DataTableInfo.Get(context);
-            var dataTableAnnual = DataTableAnnual.Get(context);
-            var dataTableOptional = DataTableOptional.Get(context);
 
             //Output
             string strWordOutput = "";
@@ -116,14 +103,14 @@ namespace GHD.ContractRenewal.Activities
 
             try
             {
-                UpdateWordDoc(dataTableInfo, dataTableAnnual, dataTableOptional);
+                UpdateWordDoc(dataTableInfo);
             }
             catch(Exception e)
             {
-
+                strExceptionMessage = e.Message;
             }
            
-            void UpdateWordDoc(DataTable dtInfo, DataTable dtAnnual, DataTable dtOptional)
+            void UpdateWordDoc(DataTable dtInfo)
            {
                 Word.Application app = null;
                 Word.Documents docs = null;
@@ -194,7 +181,7 @@ namespace GHD.ContractRenewal.Activities
                     
                     /* Update SOW Table
                      * cell(i+2) the +2 is for the buffer tbl row starts at 1, the 1st row is the header so it should starts at index 2
-                     */
+                     
                     for (int i = 0; i< dtAnnual.Rows.Count; i++)
                     {
                         for(int j = 0; j < dtAnnual.Columns.Count; j++)
@@ -211,7 +198,7 @@ namespace GHD.ContractRenewal.Activities
                             tblOptional.Cell(i + 2, j).Range.Text = dtOptional.Rows[i][j].ToString();
                         }
                     }
-
+                    */
                     doc.Save();
                     doc.Close(ref missing, ref missing, ref missing);
                     doc = null;
@@ -283,6 +270,9 @@ namespace GHD.ContractRenewal.Activities
                     customInfo["Sign Title"] = drow["Customer Sign Print Title"].ToString();
                     customInfo["Sign Date"] = drow["Customer Sign Date"].ToString();
                     customInfo["GHD Sign Date"] = drow["GHD Digital Sign Date"].ToString();
+                    customInfo["Service1"] = drow["Services/Features 1"].ToString();
+                    customInfo["Service2"] = drow["Services/Features 2"].ToString();
+                    customInfo["Service3"] = drow["Services/Features 3"].ToString();
                 }
 
                 return customInfo;
