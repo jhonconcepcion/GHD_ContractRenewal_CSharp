@@ -273,6 +273,37 @@ namespace GHD.ContractRenewal.Activities
                     customInfo["Service1"] = drow["Services/Features 1"].ToString();
                     customInfo["Service2"] = drow["Services/Features 2"].ToString();
                     customInfo["Service3"] = drow["Services/Features 3"].ToString();
+                    customInfo["Service4"] = drow["Services/Features 3"].ToString();
+                    customInfo["Service5"] = drow["Services/Features 3"].ToString();
+                    customInfo["Service6"] = drow["Services/Features 3"].ToString();
+                    customInfo["Description1"] = drow["Description 1"].ToString();
+                    customInfo["Description2"] = drow["Description 2"].ToString();
+                    customInfo["Description3"] = drow["Description 3"].ToString();
+                    customInfo["Description4"] = drow["Description 4"].ToString();
+                    customInfo["Description5"] = drow["Description 5"].ToString();
+                    customInfo["Description6"] = drow["Description 6"].ToString();
+                    customInfo["[ImplementationFee1]"] = drow["Implmentation Fee 1"].ToString();
+                    customInfo["[ImplementationFee2]"] = drow["Implmentation Fee 2"].ToString();
+                    customInfo["[ImplementationFee3]"] = drow["Implmentation Fee 3"].ToString();
+                    customInfo["[ImplementationFee4]"] = drow["Implmentation Fee 4"].ToString();
+                    customInfo["[ImplementationFee5]"] = drow["Implmentation Fee 5"].ToString();
+                    customInfo["[ImplementationFee6]"] = drow["Implmentation Fee 6"].ToString();
+                    customInfo["[AnnualFee1]"] = drow["Annual Fee 1"].ToString();
+                    customInfo["[AnnualFee2]"] = drow["Annual Fee 2"].ToString();
+                    customInfo["[AnnualFee3]"] = drow["Annual Fee 3"].ToString();
+                    customInfo["[AnnualFee4]"] = drow["Annual Fee 4"].ToString();
+                    customInfo["[AnnualFee5]"] = drow["Annual Fee 5"].ToString();
+                    customInfo["[AnnualFee6]"] = drow["Annual Fee 6"].ToString();
+                    customInfo["OptionalService1"] = drow["Optional Services/Features 1"].ToString();
+                    customInfo["OptionalService2"] = drow["Optional Services/Features 2"].ToString();
+                    customInfo["OptionalDescription1"] = drow["Optional Description 1"].ToString();
+                    customInfo["OptionalDescription2"] = drow["Optional Description 2"].ToString();
+                    customInfo["[OptionalImplementationFee1]"] = drow["Optional Implmentation Fee 1"].ToString();
+                    customInfo["[OptionalImplementationFee2]"] = drow["Optional Implmentation Fee 2"].ToString();
+                    customInfo["[OptionalAnnualFee1]"] = drow["Optional Annual Fee 1"].ToString();
+                    customInfo["[OptionalAnnualFee2]"] = drow["Optional Annual Fee 2"].ToString();
+                    customInfo["[OptionalIncluded1]"] = drow["Optional Included 1"].ToString();
+                    customInfo["[OptionalIncluded2]"] = drow["Optional Included 2"].ToString();
                 }
 
                 return customInfo;
