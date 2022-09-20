@@ -14,6 +14,7 @@ using GHD.ContractRenewal.Activities.Properties;
 using UiPath.Shared.Activities;
 using UiPath.Shared.Activities.Localization;
 using Word = Microsoft.Office.Interop.Word;
+using System.Text.RegularExpressions;
 
 namespace GHD.ContractRenewal.Activities
 {
@@ -237,6 +238,52 @@ namespace GHD.ContractRenewal.Activities
                  * Key should be the placeholder in the template. Note that the key is case sensitive.
                  */
                 var customInfo = new Dictionary<string, string>();
+                decimal AnnualFee1;
+                decimal AnnualFee2;
+                decimal AnnualFee3;
+                decimal AnnualFee4;
+                decimal AnnualFee5;
+                decimal AnnualFee6;
+                decimal AnnualFee7;
+                decimal AnnualFee8;
+                decimal AnnualFee9;
+                decimal AnnualFee10;
+                decimal AnnualFee11;
+                decimal AnnualFee12;
+                decimal AnnualFee13;
+                decimal AnnualFee14;
+                decimal AnnualFee15;
+                decimal AnnualFee16;
+                decimal AnnualFee17;
+                decimal AnnualFee18;
+                decimal AnnualFee19;
+                decimal AnnualFee20;
+                decimal ImplementationFee1;
+                decimal ImplementationFee2;
+                decimal ImplementationFee3;
+                decimal ImplementationFee4;
+                decimal ImplementationFee5;
+                decimal ImplementationFee6;
+                decimal ImplementationFee7;
+                decimal ImplementationFee8;
+                decimal ImplementationFee9;
+                decimal ImplementationFee10;
+                decimal ImplementationFee11;
+                decimal ImplementationFee12;
+                decimal ImplementationFee13;
+                decimal ImplementationFee14;
+                decimal ImplementationFee15;
+                decimal ImplementationFee16;
+                decimal ImplementationFee17;
+                decimal ImplementationFee18;
+                decimal ImplementationFee19;
+                decimal ImplementationFee20;
+                decimal OptionalAnnualFee1;
+                decimal OptionalAnnualFee2;
+                decimal OptionalImplementationFee1;
+                decimal OptionalImplementationFee2;
+                decimal TotalImplementationFee;
+                decimal TotalAnnualFee;
 
                 foreach (DataRow drow in dtInfo.Rows)
                 {
@@ -251,57 +298,489 @@ namespace GHD.ContractRenewal.Activities
                     customInfo["Send Invoice"] = drow["Send Invoices to"].ToString();
                     customInfo["Product Solution"] = drow["Product Solution"].ToString();
                     customInfo["Project Number"] = drow["Project Number"].ToString();
-                    customInfo["Delivery Timing"] = drow["Estimated Delivery Timing"].ToString();
+                    //customInfo["Delivery Timing"] = drow["Estimated Delivery Timing"].ToString();
                     customInfo["License Term"] = drow["License Term"].ToString();
                     customInfo["Payment Terms"] = drow["Payment Terms"].ToString();
-                    customInfo["Expiry Date"] = drow["Quote Expiry Date"].ToString();
+                    //customInfo["Expiry Date"] = drow["Quote Expiry Date"].ToString();
                     customInfo["Executive"] = drow["Account Executive"].ToString();
                     customInfo["Executive Email"] = drow["Account Executive Email"].ToString();
-                    customInfo["Executive Phone"] = drow["Account Executive Phone"].ToString();
-                    customInfo["Purpose"] = drow["Purpose"].ToString();
-                    customInfo["Total Implementation"] = drow["Total Implmentation Fee"].ToString();
-                    customInfo["Total Annual"] = drow["Total Annual Fee"].ToString();
-                    customInfo["Acceptance Criteria"] = drow["Acceptance Criteria"].ToString();
-                    customInfo["Delivery Schedule"] = drow["Delivery Schedule"].ToString();
-                    customInfo["Exclusions"] = drow["Exclusions and Assumptions"].ToString();
-                    customInfo["Payment Schedule"] = drow["Payment Schedule On-Time"].ToString();
-                    customInfo["Year Fee"] = drow["Payment Schedule Year's fees"].ToString();
-                    customInfo["Sign Name"] = drow["Customer Sign Print Name"].ToString();
-                    customInfo["Sign Title"] = drow["Customer Sign Print Title"].ToString();
-                    customInfo["Sign Date"] = drow["Customer Sign Date"].ToString();
-                    customInfo["GHD Sign Date"] = drow["GHD Digital Sign Date"].ToString();
+                    //customInfo["Executive Phone"] = drow["Account Executive Phone"].ToString();
+                    //customInfo["Purpose"] = drow["Purpose"].ToString();
+
+                    var isTotalImplementationFeeDecimal = Decimal.TryParse(drow["Total Implmentation Fee"].ToString(), out TotalImplementationFee);
+                    var isTotalAnnualFeeDecimal = Decimal.TryParse(drow["Total Annual Fee"].ToString(), out TotalAnnualFee);
+                    if (isTotalImplementationFeeDecimal == true)
+                    {
+                        customInfo["Total Implementation"] = "$" + String.Format("{0:#,0.00}", drow["Total Implmentation Fee"]);
+                    }
+                    else
+                    {
+                        customInfo["Total Implementation"] = drow["Total Implmentation Fee"].ToString();
+                    }
+                    if (isTotalAnnualFeeDecimal == true)
+                    {
+                        customInfo["Total Annual"] = "$" + String.Format("{0:#,0.00}", drow["Total Annual Fee"]);
+                    }
+                    else
+                    {
+                        customInfo["Total Annual"] = drow["Total Annual Fee"].ToString();
+                    }
+
+                    //customInfo["Acceptance Criteria"] = drow["Acceptance Criteria"].ToString();
+                    //customInfo["Delivery Schedule"] = drow["Delivery Schedule"].ToString();
+                    //customInfo["Exclusions"] = drow["Exclusions and Assumptions"].ToString();
+                    //customInfo["Payment Schedule"] = drow["Payment Schedule On-Time"].ToString();
+                    //customInfo["Year Fee"] = drow["Payment Schedule Year's fees"].ToString();
+                    //customInfo["Sign Name"] = drow["Customer Sign Print Name"].ToString();
+                    //customInfo["Sign Title"] = drow["Customer Sign Print Title"].ToString();
+                    //customInfo["Sign Date"] = drow["Customer Sign Date"].ToString();
+                    //customInfo["GHD Sign Date"] = drow["GHD Digital Sign Date"].ToString();
                     customInfo["Service1"] = drow["Services/Features 1"].ToString();
                     customInfo["Service2"] = drow["Services/Features 2"].ToString();
                     customInfo["Service3"] = drow["Services/Features 3"].ToString();
                     customInfo["Service4"] = drow["Services/Features 4"].ToString();
                     customInfo["Service5"] = drow["Services/Features 5"].ToString();
                     customInfo["Service6"] = drow["Services/Features 6"].ToString();
+                    customInfo["Service7"] = drow["Services/Features 7"].ToString();
+                    customInfo["Service8"] = drow["Services/Features 8"].ToString();
+                    customInfo["Service9"] = drow["Services/Features 9"].ToString();
+                    customInfo["Service10"] = drow["Services/Features 10"].ToString();
+                    customInfo["Service11"] = drow["Services/Features 11"].ToString();
+                    customInfo["Service12"] = drow["Services/Features 12"].ToString();
+                    customInfo["Service13"] = drow["Services/Features 13"].ToString();
+
+                    customInfo["Service14"] = drow["Services/Features 14"].ToString();
+                    customInfo["Service15"] = drow["Services/Features 15"].ToString();
+                    customInfo["Service16"] = drow["Services/Features 16"].ToString();
+                    customInfo["Service17"] = drow["Services/Features 17"].ToString();
+                    customInfo["Service18"] = drow["Services/Features 18"].ToString();
+                    customInfo["Service19"] = drow["Services/Features 19"].ToString();
+                    customInfo["Service20"] = drow["Services/Features 20"].ToString();
                     customInfo["Description1"] = drow["Description 1"].ToString();
                     customInfo["Description2"] = drow["Description 2"].ToString();
                     customInfo["Description3"] = drow["Description 3"].ToString();
                     customInfo["Description4"] = drow["Description 4"].ToString();
                     customInfo["Description5"] = drow["Description 5"].ToString();
                     customInfo["Description6"] = drow["Description 6"].ToString();
-                    customInfo["ImplementationFee1"] = drow["Implementation Fee 1"].ToString();
-                    customInfo["ImplementationFee2"] = drow["Implementation Fee 2"].ToString();
-                    customInfo["ImplementationFee3"] = drow["Implementation Fee 3"].ToString();
-                    customInfo["ImplementationFee4"] = drow["Implementation Fee 4"].ToString();
-                    customInfo["ImplementationFee5"] = drow["Implementation Fee 5"].ToString();
-                    customInfo["ImplementationFee6"] = drow["Implementation Fee 6"].ToString();
-                    customInfo["AnnualFee1"] = drow["Annual Fee 1"].ToString();
-                    customInfo["AnnualFee2"] = drow["Annual Fee 2"].ToString();
-                    customInfo["AnnualFee3"] = drow["Annual Fee 3"].ToString();
-                    customInfo["AnnualFee4"] = drow["Annual Fee 4"].ToString();
-                    customInfo["AnnualFee5"] = drow["Annual Fee 5"].ToString();
-                    customInfo["AnnualFee6"] = drow["Annual Fee 6"].ToString();
+                    customInfo["Description7"] = drow["Description 7"].ToString();
+                    customInfo["Description8"] = drow["Description 8"].ToString();
+                    customInfo["Description9"] = drow["Description 9"].ToString();
+                    customInfo["Description10"] = drow["Description 10"].ToString();
+                    customInfo["Description11"] = drow["Description 11"].ToString();
+                    customInfo["Description12"] = drow["Description 12"].ToString();
+                    customInfo["Description13"] = drow["Description 13"].ToString();
+                    customInfo["Description14"] = drow["Description 14"].ToString();
+                    customInfo["Description15"] = drow["Description 15"].ToString();
+                    customInfo["Description16"] = drow["Description 16"].ToString();
+                    customInfo["Description17"] = drow["Description 17"].ToString();
+                    customInfo["Description18"] = drow["Description 18"].ToString();
+                    customInfo["Description19"] = drow["Description 19"].ToString();
+                    customInfo["Description20"] = drow["Description 20"].ToString();
+
+                    var isImplementationFee1Decimal = Decimal.TryParse(drow["Implementation Fee 1"].ToString(), out ImplementationFee1);
+                    var isImplementationFee2Decimal = Decimal.TryParse(drow["Implementation Fee 2"].ToString(), out ImplementationFee2);
+                    var isImplementationFee3Decimal = Decimal.TryParse(drow["Implementation Fee 3"].ToString(), out ImplementationFee3);
+                    var isImplementationFee4Decimal = Decimal.TryParse(drow["Implementation Fee 4"].ToString(), out ImplementationFee4);
+                    var isImplementationFee5Decimal = Decimal.TryParse(drow["Implementation Fee 5"].ToString(), out ImplementationFee5);
+                    var isImplementationFee6Decimal = Decimal.TryParse(drow["Implementation Fee 6"].ToString(), out ImplementationFee6);
+                    var isImplementationFee7Decimal = Decimal.TryParse(drow["Implementation Fee 7"].ToString(), out ImplementationFee7);
+                    var isImplementationFee8Decimal = Decimal.TryParse(drow["Implementation Fee 8"].ToString(), out ImplementationFee8);
+                    var isImplementationFee9Decimal = Decimal.TryParse(drow["Implementation Fee 9"].ToString(), out ImplementationFee9);
+                    var isImplementationFee10Decimal = Decimal.TryParse(drow["Implementation Fee 10"].ToString(), out ImplementationFee10);
+                    var isImplementationFee11Decimal = Decimal.TryParse(drow["Implementation Fee 11"].ToString(), out ImplementationFee11);
+                    var isImplementationFee12Decimal = Decimal.TryParse(drow["Implementation Fee 12"].ToString(), out ImplementationFee12);
+                    var isImplementationFee13Decimal = Decimal.TryParse(drow["Implementation Fee 13"].ToString(), out ImplementationFee13);
+                    var isImplementationFee14Decimal = Decimal.TryParse(drow["Implementation Fee 14"].ToString(), out ImplementationFee14);
+                    var isImplementationFee15Decimal = Decimal.TryParse(drow["Implementation Fee 15"].ToString(), out ImplementationFee15);
+                    var isImplementationFee16Decimal = Decimal.TryParse(drow["Implementation Fee 16"].ToString(), out ImplementationFee16);
+                    var isImplementationFee17Decimal = Decimal.TryParse(drow["Implementation Fee 17"].ToString(), out ImplementationFee17);
+                    var isImplementationFee18Decimal = Decimal.TryParse(drow["Implementation Fee 18"].ToString(), out ImplementationFee18);
+                    var isImplementationFee19Decimal = Decimal.TryParse(drow["Implementation Fee 19"].ToString(), out ImplementationFee19);
+                    var isImplementationFee20Decimal = Decimal.TryParse(drow["Implementation Fee 20"].ToString(), out ImplementationFee20);
+                    if (isImplementationFee1Decimal == true)
+                    {
+                        customInfo["ImplementationFee1"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 1"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee1"] = drow["Implementation Fee 1"].ToString();
+                    }
+                    if (isImplementationFee2Decimal == true)
+                    {
+                        customInfo["ImplementationFee2"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 2"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee2"] = drow["Implementation Fee 2"].ToString();
+                    }
+                    if (isImplementationFee3Decimal == true)
+                    {
+                        customInfo["ImplementationFee3"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 3"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee3"] = drow["Implementation Fee 3"].ToString();
+                    }
+                    if (isImplementationFee4Decimal == true)
+                    {
+                        customInfo["ImplementationFee4"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 4"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee4"] = drow["Implementation Fee 4"].ToString();
+                    }
+                    if (isImplementationFee5Decimal == true)
+                    {
+                        customInfo["ImplementationFee5"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 5"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee5"] = drow["Implementation Fee 5"].ToString();
+                    }
+                    if (isImplementationFee6Decimal == true)
+                    {
+                        customInfo["ImplementationFee6"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 6"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee6"] = drow["Implementation Fee 6"].ToString();
+                    }
+                    if (isImplementationFee7Decimal == true)
+                    {
+                        customInfo["ImplementationFee7"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 7"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee7"] = drow["Implementation Fee 7"].ToString();
+                    }
+                    if (isImplementationFee8Decimal == true)
+                    {
+                        customInfo["ImplementationFee8"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 8"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee8"] = drow["Implementation Fee 8"].ToString();
+                    }
+                    if (isImplementationFee9Decimal == true)
+                    {
+                        customInfo["ImplementationFee9"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 9"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee9"] = drow["Implementation Fee 9"].ToString();
+                    }
+                    if (isImplementationFee10Decimal == true)
+                    {
+                        customInfo["ImplementationFee10"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 10"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee10"] = drow["Implementation Fee 10"].ToString();
+                    }
+                    if (isImplementationFee11Decimal == true)
+                    {
+                        customInfo["ImplementationFee11"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 11"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee11"] = drow["Implementation Fee 11"].ToString();
+                    }
+                    if (isImplementationFee12Decimal == true)
+                    {
+                        customInfo["ImplementationFee12"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 12"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee12"] = drow["Implementation Fee 12"].ToString();
+                    }
+                    if (isImplementationFee13Decimal == true)
+                    {
+                        customInfo["ImplementationFee13"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 13"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee13"] = drow["Implementation Fee 13"].ToString();
+                    }
+                    if (isImplementationFee14Decimal == true)
+                    {
+                        customInfo["ImplementationFee14"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 14"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee14"] = drow["Implementation Fee 14"].ToString();
+                    }
+                    if (isImplementationFee15Decimal == true)
+                    {
+                        customInfo["ImplementationFee15"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 15"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee15"] = drow["Implementation Fee 15"].ToString();
+                    }
+                    if (isImplementationFee16Decimal == true)
+                    {
+                        customInfo["ImplementationFee16"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 16"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee16"] = drow["Implementation Fee 16"].ToString();
+                    }
+                    if (isImplementationFee17Decimal == true)
+                    {
+                        customInfo["ImplementationFee17"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 17"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee17"] = drow["Implementation Fee 17"].ToString();
+                    }
+                    if (isImplementationFee18Decimal == true)
+                    {
+                        customInfo["ImplementationFee18"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 18"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee18"] = drow["Implementation Fee 18"].ToString();
+                    }
+                    if (isImplementationFee19Decimal == true)
+                    {
+                        customInfo["ImplementationFee19"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 19"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee19"] = drow["Implementation Fee 19"].ToString();
+                    }
+                    if (isImplementationFee20Decimal == true)
+                    {
+                        customInfo["ImplementationFee20"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 20"]);
+                    }
+                    else
+                    {
+                        customInfo["ImplementationFee20"] = drow["Implementation Fee 20"].ToString();
+                    }
+                    var isAnnualFee1Decimal = Decimal.TryParse(drow["Annual Fee 1"].ToString(), out AnnualFee1);
+                    var isAnnualFee2Decimal = Decimal.TryParse(drow["Annual Fee 2"].ToString(), out AnnualFee2);
+                    var isAnnualFee3Decimal = Decimal.TryParse(drow["Annual Fee 3"].ToString(), out AnnualFee3);
+                    var isAnnualFee4Decimal = Decimal.TryParse(drow["Annual Fee 4"].ToString(), out AnnualFee4);
+                    var isAnnualFee5Decimal = Decimal.TryParse(drow["Annual Fee 5"].ToString(), out AnnualFee5);
+                    var isAnnualFee6Decimal = Decimal.TryParse(drow["Annual Fee 6"].ToString(), out AnnualFee6);
+                    var isAnnualFee7Decimal = Decimal.TryParse(drow["Annual Fee 7"].ToString(), out AnnualFee7);
+                    var isAnnualFee8Decimal = Decimal.TryParse(drow["Annual Fee 8"].ToString(), out AnnualFee8);
+                    var isAnnualFee9Decimal = Decimal.TryParse(drow["Annual Fee 9"].ToString(), out AnnualFee9);
+                    var isAnnualFee10Decimal = Decimal.TryParse(drow["Annual Fee 10"].ToString(), out AnnualFee10);
+                    var isAnnualFee11Decimal = Decimal.TryParse(drow["Annual Fee 11"].ToString(), out AnnualFee11);
+                    var isAnnualFee12Decimal = Decimal.TryParse(drow["Annual Fee 12"].ToString(), out AnnualFee12);
+                    var isAnnualFee13Decimal = Decimal.TryParse(drow["Annual Fee 13"].ToString(), out AnnualFee13);
+                    var isAnnualFee14Decimal = Decimal.TryParse(drow["Annual Fee 14"].ToString(), out AnnualFee14);
+                    var isAnnualFee15Decimal = Decimal.TryParse(drow["Annual Fee 15"].ToString(), out AnnualFee15);
+                    var isAnnualFee16Decimal = Decimal.TryParse(drow["Annual Fee 16"].ToString(), out AnnualFee16);
+                    var isAnnualFee17Decimal = Decimal.TryParse(drow["Annual Fee 17"].ToString(), out AnnualFee17);
+                    var isAnnualFee18Decimal = Decimal.TryParse(drow["Annual Fee 18"].ToString(), out AnnualFee18);
+                    var isAnnualFee19Decimal = Decimal.TryParse(drow["Annual Fee 19"].ToString(), out AnnualFee19);
+                    var isAnnualFee20Decimal = Decimal.TryParse(drow["Annual Fee 20"].ToString(), out AnnualFee20);
+
+                    if (isAnnualFee1Decimal == true)
+                    {
+                        customInfo["AnnualFee1"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 1"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee1"] = drow["Annual Fee 1"].ToString();
+                    }
+                    if (isAnnualFee2Decimal == true)
+                    {
+                        customInfo["AnnualFee2"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 2"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee2"] = String.Format("{0:#,0.00}", drow["Annual Fee 2"]);
+                    }
+                    if (isAnnualFee3Decimal == true)
+                    {
+                        customInfo["AnnualFee3"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 3"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee3"] = drow["Annual Fee 3"].ToString();
+                    }
+                    if (isAnnualFee4Decimal == true)
+                    {
+                        customInfo["AnnualFee4"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 4"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee4"] = drow["Annual Fee 4"].ToString();
+                    }
+                    if (isAnnualFee5Decimal == true)
+                    {
+                        customInfo["AnnualFee5"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 5"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee5"] = drow["Annual Fee 5"].ToString();
+                    }
+                    if (isAnnualFee6Decimal == true)
+                    {
+                        customInfo["AnnualFee6"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 6"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee6"] = drow["Annual Fee 6"].ToString();
+                    }
+                    if (isAnnualFee7Decimal == true)
+                    {
+                        customInfo["AnnualFee7"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 7"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee7"] = drow["Annual Fee 7"].ToString();
+                    }
+                    if (isAnnualFee8Decimal == true)
+                    {
+                        customInfo["AnnualFee8"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 8"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee8"] = drow["Annual Fee 8"].ToString();
+                    }
+                    if (isAnnualFee9Decimal == true)
+                    {
+                        customInfo["AnnualFee9"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 9"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee9"] = drow["Annual Fee 9"].ToString();
+                    }
+                    if (isAnnualFee10Decimal == true)
+                    {
+                        customInfo["AnnualFee10"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 10"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee10"] = drow["Annual Fee 10"].ToString();
+                    }
+                    if (isAnnualFee11Decimal == true)
+                    {
+                        customInfo["AnnualFee11"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 11"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee11"] = drow["Annual Fee 11"].ToString();
+                    }
+                    if (isAnnualFee12Decimal == true)
+                    {
+                        customInfo["AnnualFee12"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 12"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee12"] = String.Format("{0:#,0.00}", drow["Annual Fee 12"]);
+                    }
+                    if (isAnnualFee13Decimal == true)
+                    {
+                        customInfo["AnnualFee13"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 13"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee13"] = drow["Annual Fee 13"].ToString();
+                    }
+                    if (isAnnualFee14Decimal == true)
+                    {
+                        customInfo["AnnualFee14"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 14"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee14"] = drow["Annual Fee 14"].ToString();
+                    }
+                    if (isAnnualFee15Decimal == true)
+                    {
+                        customInfo["AnnualFee15"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 15"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee15"] = drow["Annual Fee 15"].ToString();
+                    }
+                    if (isAnnualFee16Decimal == true)
+                    {
+                        customInfo["AnnualFee16"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 16"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee16"] = drow["Annual Fee 16"].ToString();
+                    }
+                    if (isAnnualFee17Decimal == true)
+                    {
+                        customInfo["AnnualFee17"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 17"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee17"] = drow["Annual Fee 17"].ToString();
+                    }
+                    if (isAnnualFee18Decimal == true)
+                    {
+                        customInfo["AnnualFee18"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 18"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee18"] = drow["Annual Fee 18"].ToString();
+                    }
+                    if (isAnnualFee19Decimal == true)
+                    {
+                        customInfo["AnnualFee19"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 19"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee19"] = drow["Annual Fee 19"].ToString();
+                    }
+                    if (isAnnualFee20Decimal == true)
+                    {
+                        customInfo["AnnualFee20"] = "$" + String.Format("{0:#,0.00}", drow["Annual Fee 20"]);
+                    }
+                    else
+                    {
+                        customInfo["AnnualFee20"] = drow["Annual Fee 20"].ToString();
+                    }
                     customInfo["OptionalService1"] = drow["Optional Services/Features 1"].ToString();
                     customInfo["OptionalService2"] = drow["Optional Services/Features 2"].ToString();
                     customInfo["OptionalDescription1"] = drow["Optional Description 1"].ToString();
                     customInfo["OptionalDescription2"] = drow["Optional Description 2"].ToString();
-                    customInfo["OptionalImplementationFee1"] = drow["Optional Implmentation Fee 1"].ToString();
-                    customInfo["OptionalImplementationFee2"] = drow["Optional Implmentation Fee 2"].ToString();
-                    customInfo["OptionalAnnualFee1"] = drow["Optional Annual Fee 1"].ToString();
-                    customInfo["OptionalAnnualFee2"] = drow["Optional Annual Fee 2"].ToString();
+
+                    var isOptionalImplementationFee1Decimal = Decimal.TryParse(drow["Optional Implmentation Fee 1"].ToString(), out OptionalImplementationFee1);
+                    var isOptionalImplementationFee2Decimal = Decimal.TryParse(drow["Optional Implmentation Fee 2"].ToString(), out OptionalImplementationFee2);
+
+                    if (isOptionalImplementationFee1Decimal == true)
+                    {
+                        customInfo["OptionalImplementationFee1"] = "$" + String.Format("{0:#,0.00}", drow["Optional Implmentation Fee 1"]);
+                    }
+                    else
+                    {
+                        customInfo["OptionalImplementationFee1"] = drow["Optional Implmentation Fee 1"].ToString();
+                    }
+                    if (isOptionalImplementationFee2Decimal == true)
+                    {
+                        customInfo["OptionalImplementationFee2"] = "$" + String.Format("{0:#,0.00}", drow["Optional Implmentation Fee 2"]);
+                    }
+                    else
+                    {
+                        customInfo["OptionalImplementationFee2"] = drow["Optional Implmentation Fee 2"].ToString();
+                    }
+
+                    var isOptionalAnnualFee1Decimal = Decimal.TryParse(drow["Optional Annual Fee 1"].ToString(), out OptionalAnnualFee1);
+                    var isOptionalAnnualFee2Decimal = Decimal.TryParse(drow["Optional Annual Fee 2"].ToString(), out OptionalAnnualFee2);
+                    if (isOptionalAnnualFee1Decimal == true)
+                    {
+                        customInfo["OptionalAnnualFee1"] = "$" + String.Format("{0:#,0.00}", drow["Optional Annual Fee 1"]);
+                    }
+                    else
+                    {
+                        customInfo["OptionalAnnualFee1"] = drow["Optional Annual Fee 1"].ToString();
+                    }
+                    if (isOptionalAnnualFee2Decimal == true)
+                    {
+                        customInfo["OptionalAnnualFee2"] = "$" + String.Format("{0:#,0.00}", drow["Optional Annual Fee 2"]);
+                    }
+                    else
+                    {
+                        customInfo["OptionalAnnualFee2"] = drow["Optional Annual Fee 2"].ToString();
+                    }
                     customInfo["OptionalIncluded1"] = drow["Optional Included 1"].ToString();
                     customInfo["OptionalIncluded2"] = drow["Optional Included 2"].ToString();
 
@@ -359,7 +838,7 @@ namespace GHD.ContractRenewal.Activities
                     Log("Start: " + MethodBase.GetCurrentMethod().Name);
 
                     //Create new file
-                    string newFileName = fileName + "_" + DateTime.Today.ToString("MMMM yyyy") + Path.GetExtension(BidTemplate);
+                    string newFileName = fileName + Path.GetExtension(BidTemplate);
                     string newFilePath = Path.Combine(outputFolderPath, newfolderName, newFileName);
                     string newFolderPath = Path.GetDirectoryName(newFilePath);
                     strWordOutput = newFolderPath;
