@@ -304,7 +304,7 @@ namespace GHD.ContractRenewal.Activities
                     //customInfo["Expiry Date"] = drow["Quote Expiry Date"].ToString();
                     customInfo["Executive"] = drow["Account Executive"].ToString();
                     customInfo["Executive Email"] = drow["Account Executive Email"].ToString();
-                    //customInfo["Executive Phone"] = drow["Account Executive Phone"].ToString();
+                    customInfo["Executive Phone"] = drow["Account Executive Phone"].ToString();
                     //customInfo["Purpose"] = drow["Purpose"].ToString();
 
                     var isTotalImplementationFeeDecimal = Decimal.TryParse(drow["Total Implmentation Fee"].ToString(), out TotalImplementationFee);
