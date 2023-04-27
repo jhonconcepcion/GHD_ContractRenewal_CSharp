@@ -88,6 +88,8 @@ namespace GHD.ContractRenewal.Activities
 
         protected override async Task<Action<AsyncCodeActivityContext>> ExecuteAsync(AsyncCodeActivityContext context, CancellationToken cancellationToken)
         {
+            //Main Method 
+
             // Inputs
             var logDirectory = LogDirectory.Get(context);
             var nonBidTemplatePath = NonBidTemplatePath.Get(context);
@@ -104,6 +106,7 @@ namespace GHD.ContractRenewal.Activities
 
             try
             {
+                //Invokes Update Word Doc   
                 UpdateWordDoc(dataTableInfo);
             }
             catch(Exception e)
@@ -113,6 +116,7 @@ namespace GHD.ContractRenewal.Activities
            
             void UpdateWordDoc(DataTable dtInfo)
            {
+                //Initialize Varible
                 Word.Application app = null;
                 Word.Documents docs = null;
                 Word.Document doc = null;
@@ -120,9 +124,15 @@ namespace GHD.ContractRenewal.Activities
                 Word.Table tblSOW = null;
                 Word.Table tblOptional = null;
                 bool IsWordAppLaunched = false;
+
+                //Calls getDocType Method
                 bool isBid = getDocType(dtInfo);
+                //Calls getFileName
                 string strFileName = getFileName(dtInfo);
+
                 object missing = System.Reflection.Missing.Value;
+
+                //Calls buildCustomerInfo
                 Dictionary<string, string> dicInfo = buildCustomerInfo(dtInfo);
 
 
@@ -135,12 +145,16 @@ namespace GHD.ContractRenewal.Activities
                     docs = app.Documents;
                     Log("UpdateWordDoc" + " Method name:" + MethodBase.GetCurrentMethod().Name + " " + "Word application object initialized");
                     string newfolderName = DateTime.Now.ToString("MMddyyyy HHmmss");
+
+                    //Creates new document
                     string newFilePath = CreateNewWordDoc(newfolderName, isBid, strFileName);
+
                     doc = docs.Open(newFilePath, ReadOnly: false);
                     Log("Opened word document");
 
+                    /*Unused
                     tblSOW = doc.Tables[2];
-                    tblOptional = doc.Tables[3];
+                    tblOptional = doc.Tables[3];*/
 
                     foreach (KeyValuePair<string, string> item in dicInfo)
                     {
@@ -156,6 +170,7 @@ namespace GHD.ContractRenewal.Activities
                         app.Application.Selection.Find.Text = "[" + item.Key + "]";
                         app.Application.Selection.Find.Replacement.ClearFormatting();
                         string replaceTxt = item.Value.Trim();
+
                         if (replaceTxt.ToString().Length < 256)
                         {
                             app.Application.Selection.Find.Replacement.Text = replaceTxt;
@@ -377,6 +392,11 @@ namespace GHD.ContractRenewal.Activities
                     customInfo["Description19"] = drow["Description 19"].ToString();
                     customInfo["Description20"] = drow["Description 20"].ToString();
 
+                    /*
+                     * The following items tries to parse the ImplementationFee Column into decimal. If C# successfully parse the item into decimal
+                     * isImplementationFeeDecimal variable will be set to true, else false
+                     */
+
                     var isImplementationFee1Decimal = Decimal.TryParse(drow["Implementation Fee 1"].ToString(), out ImplementationFee1);
                     var isImplementationFee2Decimal = Decimal.TryParse(drow["Implementation Fee 2"].ToString(), out ImplementationFee2);
                     var isImplementationFee3Decimal = Decimal.TryParse(drow["Implementation Fee 3"].ToString(), out ImplementationFee3);
@@ -397,6 +417,7 @@ namespace GHD.ContractRenewal.Activities
                     var isImplementationFee18Decimal = Decimal.TryParse(drow["Implementation Fee 18"].ToString(), out ImplementationFee18);
                     var isImplementationFee19Decimal = Decimal.TryParse(drow["Implementation Fee 19"].ToString(), out ImplementationFee19);
                     var isImplementationFee20Decimal = Decimal.TryParse(drow["Implementation Fee 20"].ToString(), out ImplementationFee20);
+
                     if (isImplementationFee1Decimal == true)
                     {
                         customInfo["ImplementationFee1"] = "$" + String.Format("{0:#,0.00}", drow["Implementation Fee 1"]);
@@ -557,6 +578,11 @@ namespace GHD.ContractRenewal.Activities
                     {
                         customInfo["ImplementationFee20"] = drow["Implementation Fee 20"].ToString();
                     }
+                    /*
+                     * The following items tries to parse the Annual Fee Column into decimal. If C# successfully parse the item into decimal
+                     * isAnnualFee variable will be set to true, else false
+                     */
+
                     var isAnnualFee1Decimal = Decimal.TryParse(drow["Annual Fee 1"].ToString(), out AnnualFee1);
                     var isAnnualFee2Decimal = Decimal.TryParse(drow["Annual Fee 2"].ToString(), out AnnualFee2);
                     var isAnnualFee3Decimal = Decimal.TryParse(drow["Annual Fee 3"].ToString(), out AnnualFee3);
@@ -577,6 +603,12 @@ namespace GHD.ContractRenewal.Activities
                     var isAnnualFee18Decimal = Decimal.TryParse(drow["Annual Fee 18"].ToString(), out AnnualFee18);
                     var isAnnualFee19Decimal = Decimal.TryParse(drow["Annual Fee 19"].ToString(), out AnnualFee19);
                     var isAnnualFee20Decimal = Decimal.TryParse(drow["Annual Fee 20"].ToString(), out AnnualFee20);
+
+
+                    /*
+                     * If the Annual Fee is decimal, C# will parse it as Decimal then to String and add $ sign
+                     * Else Annual Fee will be automatically parse to string.
+                     */
 
                     if (isAnnualFee1Decimal == true)
                     {
@@ -738,10 +770,12 @@ namespace GHD.ContractRenewal.Activities
                     {
                         customInfo["AnnualFee20"] = drow["Annual Fee 20"].ToString();
                     }
+
                     customInfo["OptionalService1"] = drow["Optional Services/Features 1"].ToString();
                     customInfo["OptionalService2"] = drow["Optional Services/Features 2"].ToString();
                     customInfo["OptionalDescription1"] = drow["Optional Description 1"].ToString();
                     customInfo["OptionalDescription2"] = drow["Optional Description 2"].ToString();
+
 
                     var isOptionalImplementationFee1Decimal = Decimal.TryParse(drow["Optional Implmentation Fee 1"].ToString(), out OptionalImplementationFee1);
                     var isOptionalImplementationFee2Decimal = Decimal.TryParse(drow["Optional Implmentation Fee 2"].ToString(), out OptionalImplementationFee2);
@@ -832,7 +866,7 @@ namespace GHD.ContractRenewal.Activities
             {
                 try
                 {
-                    //
+                    //Save the bid and NonBid Template Path
                     string BidTemplate = bidTemplatePath;
                     string nonBidTemplate = nonBidTemplatePath;
                     Log("Start: " + MethodBase.GetCurrentMethod().Name);
@@ -841,7 +875,10 @@ namespace GHD.ContractRenewal.Activities
                     string newFileName = fileName + Path.GetExtension(BidTemplate);
                     string newFilePath = Path.Combine(outputFolderPath, newfolderName, newFileName);
                     string newFolderPath = Path.GetDirectoryName(newFilePath);
+
+                    //Set the strWordOutput output
                     strWordOutput = newFolderPath;
+
                     //string newNonBidFileName = fileName + "_" + DateTime.Today.ToString("ddMMyyyy") + Path.GetExtension(nonBidTemplate);
                     //string newNonBidFilePath = Path.Combine(outputFolderPath, newfolderName, newNonBidFileName);
                     //string newNonBidFolderPath = Path.GetDirectoryName(newNonBidFilePath);
